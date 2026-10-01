@@ -1,170 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shorts Feed</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>YouTube Shorts Portfolio</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    h1 {
+        text-align: center;
+        margin: 25px 0;
+    }
+
+    .shorts-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    .short {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    }
+
+    .short iframe {
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        border: none;
+        display: block;
+    }
+
+    @media (max-width: 1100px) {
+        .shorts-grid {
+            grid-template-columns: repeat(3, 1fr);
         }
-        body, html {
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden;
+    }
+
+    @media (max-width: 800px) {
+        .shorts-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
-        /* Vertical Scroll Container */
-        .shorts-container {
-            width: 100%;
-            height: 100%;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
+    }
+
+    @media (max-width: 500px) {
+        .shorts-grid {
+            grid-template-columns: 1fr;
         }
-        /* Hide scrollbars */
-        .shorts-container::-webkit-scrollbar {
-            display: none;
-        }
-        /* Individual Short Section */
-        .short-video-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        /* Overlay UI Elements */
-        .video-sidebar {
-            position: absolute;
-            right: 15px;
-            bottom: 120px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            color: #fff;
-            z-index: 10;
-        }
-        .action-btn {
-            background: rgba(0, 0, 0, 0.4);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-        }
-        .video-info {
-            position: absolute;
-            left: 15px;
-            bottom: 30px;
-            color: white;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
-            z-index: 10;
-            max-width: 75%;
-        }
-        .video-info h3 {
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-        .video-info p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-    </style>
+    }
+</style>
 </head>
+
 <body>
 
-    <div class="shorts-container" id="feed">
-        <!-- Short 1 -->
-        <div class="short-video-wrapper">
-            <!-- Note: Browsers block sound autoplay. Added 'muted' to guarantee it plays instantly. -->
-            <video class="short-video" loop playsinline muted>
-                <source src="https://mixkit.co" type="video/mp4">
-            </video>
-            <div class="video-sidebar">
-                <button class="action-btn" onclick="toggleMute(this)">🔇</button>
-                <button class="action-btn">❤️</button>
-                <button class="action-btn">💬</button>
-            </div>
-            <div class="video-info">
-                <h3>@creator_one</h3>
-                <p>Cyberpunk vibes in the city night! #shorts #neon</p>
-            </div>
-        </div>
+<h1>My YouTube Shorts</h1>
 
-        <!-- Short 2 -->
-        <div class="short-video-wrapper">
-            <video class="short-video" loop playsinline muted>
-                <source src="https://mixkit.co" type="video/mp4">
-            </video>
-            <div class="video-sidebar">
-                <button class="action-btn" onclick="toggleMute(this)">🔇</button>
-                <button class="action-btn">❤️</button>
-                <button class="action-btn">💬</button>
-            </div>
-            <div class="video-info">
-                <h3>@skater_pro</h3>
-                <p>Practicing new skate flips today 🛹🔥</p>
-            </div>
-        </div>
-    </div>
+<div id="shorts" class="shorts-grid"></div>
 
-    <script>
-        // Use IntersectionObserver to catch which video is active on screen
-        const options = {
-            root: document.getElementById('feed'),
-            rootMargin: '0px',
-            threshold: 0.6 // Video must be 60% visible to autoplay
-        };
+<script>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const video = entry.target.querySelector('.short-video');
-                if (entry.isIntersecting) {
-                    video.play().catch(error => {
-                        console.log("Autoplay was prevented. Awaiting user interaction.", error);
-                    });
-                } else {
-                    video.pause();
-                    video.currentTime = 0; // Reset video position when out of view
-                }
-            });
-        }, options);
+const API_KEY = "YOUR_YOUTUBE_API_KEY";
+const PLAYLIST_ID = "YOUR_PLAYLIST_ID";
 
-        // Track all short wrapper instances
-        document.querySelectorAll('.short-video-wrapper').forEach(wrapper => {
-            observer.observe(wrapper);
-        });
+async function loadShorts() {
 
-        // Global function to toggle mute state since browsers require user interaction for audio
-        function toggleMute(btn) {
-            const wrapper = btn.closest('.short-video-wrapper');
-            const video = wrapper.querySelector('.short-video');
-            
-            if (video.muted) {
-                video.muted = false;
-                btn.innerText = "🔊";
-            } else {
-                video.muted = true;
-                btn.innerText = "🔇";
-            }
-        }
-    </script>
+    const url =
+        `https://www.googleapis.com/youtube/v3/playlistItems` +
+        `?part=snippet&maxResults=50` +
+        `&playlistId=${PLAYLIST_ID}` +
+        `&key=${API_KEY}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const container = document.getElementById("shorts");
+
+    data.items.forEach(item => {
+
+        const videoId = item.snippet.resourceId.videoId;
+
+        const card = document.createElement("div");
+        card.className = "short";
+
+        card.innerHTML = `
+            <iframe
+                src="https://www.youtube.com/embed/${videoId}"
+                title="${item.snippet.title}"
+                allow="accelerometer; autoplay; clipboard-write;
+                       encrypted-media; gyroscope; picture-in-picture;
+                       web-share"
+                allowfullscreen>
+            </iframe>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+loadShorts();
+
+</script>
+
 </body>
 </html>
