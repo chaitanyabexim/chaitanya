@@ -4,112 +4,475 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>YouTube Shorts Portfolio</title>
+<title>AI Video Portfolio</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #111;
+}
+
+/* NAVBAR */
+.navbar {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 1px solid #eee;
+    background: rgba(255,255,255,0.95);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #222;
+    font-size: 14px;
+}
+
+.nav-button {
+    background: #111;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* HERO */
+.hero {
+    min-height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 5%;
+    background:
+        radial-gradient(circle at 20% 20%, #eee 0, transparent 30%),
+        radial-gradient(circle at 80% 50%, #f1eaff 0, transparent 35%),
+        #fff;
+}
+
+.hero-container {
+    width: 100%;
+    max-width: 1250px;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: clamp(42px, 6vw, 78px);
+    line-height: 0.98;
+    letter-spacing: -4px;
+    margin-bottom: 25px;
+}
+
+.hero-text p {
+    font-size: 20px;
+    line-height: 1.6;
+    color: #666;
+    max-width: 550px;
+    margin-bottom: 35px;
+}
+
+.cta {
+    display: inline-block;
+    background: #111;
+    color: white;
+    padding: 16px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* VIDEO */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.18);
+}
+
+.video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* VIDEO SECTION */
+.video-section {
+    padding: 90px 5%;
+    background: #f7f7f7;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-title h2 {
+    font-size: 45px;
+    letter-spacing: -2px;
+}
+
+.section-title p {
+    margin-top: 10px;
+    color: #777;
+}
+
+/* VIDEO GRID */
+.video-grid {
+    max-width: 1250px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.video-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.video-card:hover {
+    transform: translateY(-7px);
+}
+
+.video-card iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+    display: block;
+}
+
+.video-info {
+    padding: 20px;
+}
+
+.video-info h3 {
+    margin-bottom: 7px;
+    font-size: 18px;
+}
+
+.video-info p {
+    color: #777;
+    font-size: 14px;
+}
+
+/* FOOTER */
+footer {
+    padding: 40px;
+    text-align: center;
+    color: #777;
+}
+
+/* MOBILE */
+@media(max-width: 900px) {
+
+    .hero-container {
+        grid-template-columns: 1fr;
     }
 
-    h1 {
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero-text {
         text-align: center;
-        margin: 25px 0;
     }
 
-    .shorts-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        padding: 20px;
-        max-width: 1400px;
-        margin: auto;
+    .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
     }
-
-    .short {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-    }
-
-    .short iframe {
-        width: 100%;
-        aspect-ratio: 9 / 16;
-        border: none;
-        display: block;
-    }
-
-    @media (max-width: 1100px) {
-        .shorts-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    @media (max-width: 800px) {
-        .shorts-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 500px) {
-        .shorts-grid {
-            grid-template-columns: 1fr;
-        }
-    }
+}
 </style>
 </head>
 
 <body>
 
-<h1>My YouTube Shorts</h1>
+<!-- NAVIGATION -->
+<nav class="navbar">
 
-<div id="shorts" class="shorts-grid"></div>
+    <div class="logo">
+        My AI Portfolio
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#videos">Videos</a>
+        <a href="#about">About</a>
+    </div>
+
+    <a href="#videos" class="nav-button">
+        Watch Videos
+    </a>
+
+</nav>
+
+
+<!-- HERO -->
+<section class="hero" id="home">
+
+    <div class="hero-container">
+
+        <div class="hero-text">
+
+            <h1>
+                Turn ideas into powerful videos.
+            </h1>
+
+            <p>
+                Welcome to my professional video portfolio.
+                Explore my maritime, shipping, chartering,
+                ship repair and bunkering projects.
+            </p>
+
+            <a href="#videos" class="cta">
+                Explore My Work →
+            </a>
+
+        </div>
+
+
+        <!-- AUTO PLAY YOUTUBE VIDEO -->
+
+        <div class="video-wrapper">
+
+            <iframe
+                id="heroVideo"
+                src=""
+                title="Featured Video"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VIDEO LIBRARY -->
+<section class="video-section" id="videos">
+
+    <div class="section-title">
+
+        <h2>My Video Portfolio</h2>
+
+        <p>
+            Watch my latest projects and presentations
+        </p>
+
+    </div>
+
+
+    <div class="video-grid" id="videoGrid">
+
+        <!-- VIDEOS ARE AUTOMATICALLY INSERTED HERE -->
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    © 2026 My Professional Portfolio
+
+</footer>
+
 
 <script>
 
-const API_KEY = "YOUR_YOUTUBE_API_KEY";
-const PLAYLIST_ID = "YOUR_PLAYLIST_ID";
+/*
+====================================================
+        ADD YOUR YOUTUBE VIDEOS HERE
+====================================================
 
-async function loadShorts() {
+Just paste YouTube URLs.
 
-    const url =
-        `https://www.googleapis.com/youtube/v3/playlistItems` +
-        `?part=snippet&maxResults=50` +
-        `&playlistId=${PLAYLIST_ID}` +
-        `&key=${API_KEY}`;
+Example:
 
-    const response = await fetch(url);
-    const data = await response.json();
+https://www.youtube.com/watch?v=ABC123
 
-    const container = document.getElementById("shorts");
+or
 
-    data.items.forEach(item => {
+https://youtu.be/ABC123
 
-        const videoId = item.snippet.resourceId.videoId;
+*/
 
-        const card = document.createElement("div");
-        card.className = "short";
+const videos = [
 
-        card.innerHTML = `
-            <iframe
-                src="https://www.youtube.com/embed/${videoId}"
-                title="${item.snippet.title}"
-                allow="accelerometer; autoplay; clipboard-write;
-                       encrypted-media; gyroscope; picture-in-picture;
-                       web-share"
-                allowfullscreen>
-            </iframe>
-        `;
+    {
+        title: "My Maritime Portfolio",
+        description: "Shipping and maritime presentation",
+        url: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_1"
+    },
 
-        container.appendChild(card);
-    });
+    {
+        title: "Ship Chartering Presentation",
+        description: "Chartering workflow and commercial operations",
+        url: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_2"
+    },
+
+    {
+        title: "Ship Repair Project",
+        description: "Ship repair and dry-dock services",
+        url: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_3"
+    },
+
+    {
+        title: "Marine Bunkering",
+        description: "Marine fuel and bunkering operations",
+        url: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_4"
+    },
+
+    {
+        title: "Ship Sale & Purchase",
+        description: "S&P commercial presentation",
+        url: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_5"
+    },
+
+    {
+        title: "My Introduction",
+        description: "Professional introduction",
+        url: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID_6"
+    }
+
+];
+
+
+/*
+====================================================
+        CONVERT YOUTUBE URL → VIDEO ID
+====================================================
+*/
+
+function getYouTubeID(url) {
+
+    let videoID = "";
+
+    if (url.includes("watch?v=")) {
+
+        videoID = url.split("watch?v=")[1].split("&")[0];
+
+    }
+
+    else if (url.includes("youtu.be/")) {
+
+        videoID = url.split("youtu.be/")[1].split("?")[0];
+
+    }
+
+    else if (url.includes("/shorts/")) {
+
+        videoID = url.split("/shorts/")[1].split("?")[0];
+
+    }
+
+    return videoID;
 }
 
-loadShorts();
+
+/*
+====================================================
+        HERO VIDEO
+====================================================
+*/
+
+const heroVideo = document.getElementById("heroVideo");
+
+if (videos.length > 0) {
+
+    const firstVideoID = getYouTubeID(videos[0].url);
+
+    heroVideo.src =
+        "https://www.youtube.com/embed/" +
+        firstVideoID +
+        "?autoplay=1&mute=1&loop=1&playlist=" +
+        firstVideoID +
+        "&controls=0&rel=0&modestbranding=1";
+
+}
+
+
+/*
+====================================================
+        CREATE VIDEO CARDS
+====================================================
+*/
+
+const videoGrid = document.getElementById("videoGrid");
+
+
+videos.forEach(function(video) {
+
+    const id = getYouTubeID(video.url);
+
+    const card = document.createElement("div");
+
+    card.className = "video-card";
+
+    card.innerHTML = `
+
+        <iframe
+            src="https://www.youtube.com/embed/${id}?rel=0&modestbranding=1"
+            title="${video.title}"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write;
+                   encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+
+        <div class="video-info">
+
+            <h3>${video.title}</h3>
+
+            <p>${video.description}</p>
+
+        </div>
+
+    `;
+
+    videoGrid.appendChild(card);
+
+});
 
 </script>
 
 </body>
 </html>
+            
